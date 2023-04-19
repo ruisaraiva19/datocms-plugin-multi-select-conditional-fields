@@ -1,0 +1,54 @@
+{
+  "name": "datocms-plugin-multi-select-conditional-fields",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Allow fields to be hidden/shown based on the values of a multi-select input field.",
+  "keywords": [
+    "datocms",
+    "datocms-plugin",
+    "field-addon",
+    "json-field",
+    "conditional fields",
+    "multi-select"
+  ],
+  "homepage": "https://github.com/ruisaraiva19/datocms-plugin-multi-select-conditional-fields",
+  "author": {
+    "name": "Rui Saraiva",
+    "email": "ruisaraiva19@gmail.com",
+    "url": "https://ruisaraiva.dev"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "scripts": {
+    "build": "tsc && vite build --base ./",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "datocms-plugin-sdk": "^0.7.7",
+    "datocms-react-ui": "^0.7.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0"
+  },
+  "datoCmsPlugin": {
+    "title": "Multi-Select Conditional Fields",
+    "previewImage": "docs/preview.gif",
+    "coverImage": "docs/cover.png",
+    "entryPoint": "dist/index.html",
+    "pluginType": "field_addon",
+    "fieldTypes": [
+      "json"
+    ],
+    "permissions": []
+  }
+}
