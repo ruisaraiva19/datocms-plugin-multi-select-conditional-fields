@@ -10,7 +10,7 @@ export function MultiSelectConditionalFields({ ctx }: PropTypes) {
     return null;
   }
   const allOptions = rawOptions.map((option) => option.value) as string[];
-  const optionsFieldValue = ctx.formValues[ctx.fieldPath] as string || '[]';
+  const optionsFieldValue = (ctx.formValues[ctx.fieldPath] as string) || '[]';
   try {
     const parsedOptionsFieldValue = JSON.parse(optionsFieldValue);
     if (Array.isArray(parsedOptionsFieldValue)) {
