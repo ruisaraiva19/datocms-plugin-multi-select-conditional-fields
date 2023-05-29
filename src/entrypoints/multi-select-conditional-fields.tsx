@@ -1,21 +1,28 @@
 import { RenderFieldExtensionCtx } from 'datocms-plugin-sdk';
 import { useCallback, useEffect, useMemo } from 'react';
-import { typedBoolean } from '../utils/misc';
+import { typedBoolean, Parameters } from '../utils/misc';
 
 type PropTypes = {
   ctx: RenderFieldExtensionCtx;
 };
 
+function checkedToShow(invert: boolean, value: boolean) {
+  return invert ? !value : !!value;
+}
+
 export function MultiSelectConditionalFields({ ctx }: PropTypes) {
+  const { invert = false, targetFieldsApiKey = [] } = ctx.parameters as Partial<Parameters>;
   const sourceField = ctx.field;
   let rawOptions = sourceField.attributes.appearance.parameters.options as any[];
   if (!Array.isArray(rawOptions)) {
     rawOptions = [];
   }
-  const targetFieldsApiKey = rawOptions.map((option) => option.value) as string[];
+  const parsedTargetFieldsApiKey = targetFieldsApiKey.length
+    ? targetFieldsApiKey
+    : (rawOptions.map((option) => option.value) as string[]);
 
   const targetFields = useMemo(() => {
-    return targetFieldsApiKey
+    return parsedTargetFieldsApiKey
       .map((targetFieldApiKey) => {
         const targetField = Object.values(ctx.fields)
           .filter(typedBoolean)
@@ -34,17 +41,18 @@ export function MultiSelectConditionalFields({ ctx }: PropTypes) {
         return targetField;
       })
       .filter((x) => x);
-  }, [ctx.fields, targetFieldsApiKey, sourceField]);
+  }, [ctx.fields, parsedTargetFieldsApiKey, sourceField]);
 
   const toggleFields = useCallback(
     (fieldsToShow: string[]) => {
       targetFields.filter(typedBoolean).forEach((targetField) => {
         const targetPath = targetField.attributes.api_key;
 
+        const show = checkedToShow(invert, fieldsToShow.includes(targetPath));
         if (targetField.attributes.localized) {
-          ctx.toggleField(`${targetPath}.${ctx.locale}`, fieldsToShow.includes(targetPath));
+          ctx.toggleField(`${targetPath}.${ctx.locale}`, show);
         } else {
-          ctx.toggleField(targetPath, fieldsToShow.includes(targetPath));
+          ctx.toggleField(targetPath, show);
         }
       });
     },
